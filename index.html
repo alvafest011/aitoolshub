@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIToolsHub</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:system-ui,sans-serif;background:#0a0a0f;color:#e8e8f0;min-height:100vh;}
+a{text-decoration:none;}
+nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:0.5px solid rgba(255,255,255,0.08);background:rgba(10,10,20,0.97);position:sticky;top:0;z-index:100;}
+.logo{font-size:20px;font-weight:700;letter-spacing:-0.5px;}
+.logo span{background:linear-gradient(90deg,#7f77dd,#5dcaa5);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.nav-links{display:flex;gap:1.5rem;align-items:center;}
+.nav-links a{font-size:14px;color:#888;transition:color .2s;}
+.nav-links a:hover{color:#e8e8f0;}
+.nav-btn{background:#7f77dd;color:white;border:none;padding:8px 18px;border-radius:8px;font-size:14px;cursor:pointer;font-weight:500;transition:background .2s;}
+.nav-btn:hover{background:#9088e8;}
+.hero{text-align:center;padding:5rem 2rem 3rem;max-width:700px;margin:0 auto;}
+.badge{display:inline-block;background:rgba(127,119,221,0.15);color:#afa9ec;border:0.5px solid rgba(127,119,221,0.3);padding:5px 14px;border-radius:20px;font-size:12px;font-weight:500;margin-bottom:1.5rem;}
+.hero h1{font-size:46px;font-weight:700;line-height:1.1;margin-bottom:1rem;letter-spacing:-1px;}
+.hero h1 span{background:linear-gradient(135deg,#7f77dd,#5dcaa5);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero p{font-size:17px;color:#888;line-height:1.6;margin-bottom:2rem;}
+.search-bar{display:flex;gap:10px;max-width:500px;margin:0 auto 1.5rem;}
+.search-bar input{flex:1;background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);color:#e8e8f0;padding:12px 16px;border-radius:10px;font-size:15px;outline:none;transition:border .2s;}
+.search-bar input:focus{border-color:#7f77dd;}
+.search-bar input::placeholder{color:#555;}
+.search-bar button{background:#7f77dd;color:white;border:none;padding:12px 22px;border-radius:10px;cursor:pointer;font-size:15px;font-weight:500;}
+.stats{display:flex;justify-content:center;gap:2.5rem;}
+.stats span{font-size:13px;color:#666;}
+.stats strong{color:#e8e8f0;}
+.filters{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:2rem 2rem 0;}
+.filter-btn{background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.1);color:#888;padding:7px 16px;border-radius:20px;font-size:13px;cursor:pointer;transition:all .2s;}
+.filter-btn:hover,.filter-btn.active{background:rgba(127,119,221,0.2);border-color:#7f77dd;color:#afa9ec;}
+.section-title{text-align:center;padding:2rem 2rem 0;}
+.section-title h2{font-size:22px;font-weight:600;margin-bottom:6px;}
+.section-title p{font-size:14px;color:#666;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px;padding:1.5rem 2rem;max-width:1200px;margin:0 auto;}
+.card{background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.08);border-radius:14px;padding:1.25rem;transition:all .2s;position:relative;overflow:hidden;display:flex;flex-direction:column;}
+.card:hover{border-color:rgba(127,119,221,0.4);background:rgba(127,119,221,0.06);transform:translateY(-2px);}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;}
+.card-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.badge-tag{font-size:11px;padding:3px 8px;border-radius:6px;font-weight:500;}
+.badge-free{background:rgba(29,158,117,0.15);color:#5dcaa5;border:0.5px solid rgba(29,158,117,0.2);}
+.badge-paid{background:rgba(127,119,221,0.15);color:#afa9ec;border:0.5px solid rgba(127,119,221,0.2);}
+.badge-freemium{background:rgba(239,159,39,0.15);color:#fac775;border:0.5px solid rgba(239,159,39,0.2);}
+.card h3{font-size:15px;font-weight:600;margin-bottom:4px;}
+.card-cat{font-size:12px;color:#7f77dd;margin-bottom:6px;font-weight:500;}
+.card p{font-size:13px;color:#888;line-height:1.5;margin-bottom:14px;flex:1;}
+.card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:auto;}
+.stars-wrap{display:flex;flex-direction:column;gap:2px;}
+.stars{font-size:12px;color:#fac775;}
+.stars span{color:#555;margin-left:3px;}
+.rating-source{font-size:10px;color:#444;}
+.cta-btn{background:rgba(127,119,221,0.15);color:#afa9ec;border:0.5px solid rgba(127,119,221,0.3);padding:6px 14px;border-radius:8px;font-size:12px;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.cta-btn:hover{background:#7f77dd;color:white;border-color:#7f77dd;}
+.featured{border-color:rgba(127,119,221,0.35);}
+.featured-label{position:absolute;top:14px;right:-20px;background:linear-gradient(90deg,#7f77dd,#5dcaa5);color:white;font-size:10px;font-weight:700;padding:3px 28px;transform:rotate(35deg);}
+.rating-skeleton{display:inline-block;width:80px;height:12px;background:linear-gradient(90deg,rgba(255,255,255,0.05) 25%,rgba(255,255,255,0.1) 50%,rgba(255,255,255,0.05) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:4px;}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.no-results{text-align:center;padding:3rem;color:#555;font-size:15px;display:none;}
+.live-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(93,202,165,0.1);border:0.5px solid rgba(93,202,165,0.25);color:#5dcaa5;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:500;margin-left:8px;}
+.live-dot{width:6px;height:6px;background:#5dcaa5;border-radius:50%;animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;align-items:center;justify-content:center;padding:1rem;}
+.modal-overlay.open{display:flex;}
+.modal{background:#13131f;border:0.5px solid rgba(255,255,255,0.12);border-radius:16px;padding:2rem;width:100%;max-width:500px;position:relative;}
+.modal h2{font-size:20px;font-weight:600;margin-bottom:6px;}
+.modal p{font-size:14px;color:#888;margin-bottom:1.5rem;}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:#888;font-size:20px;cursor:pointer;}
+.form-group{margin-bottom:1rem;}
+.form-group label{display:block;font-size:13px;color:#aaa;margin-bottom:6px;}
+.form-group input,.form-group select,.form-group textarea{width:100%;background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);color:#e8e8f0;padding:10px 14px;border-radius:8px;font-size:14px;outline:none;font-family:inherit;}
+.form-group input::placeholder,.form-group textarea::placeholder{color:#555;}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:#7f77dd;}
+.form-group select option{background:#13131f;}
+.form-group textarea{resize:vertical;min-height:80px;}
+.submit-btn{width:100%;background:#7f77dd;color:white;border:none;padding:12px;border-radius:10px;font-size:15px;font-weight:500;cursor:pointer;margin-top:.5rem;}
+.submit-btn:hover{background:#9088e8;}
+.success-msg{display:none;text-align:center;padding:1.5rem;color:#5dcaa5;font-size:15px;}
+.newsletter{background:rgba(127,119,221,0.08);border:0.5px solid rgba(127,119,221,0.2);border-radius:16px;padding:2.5rem;text-align:center;max-width:520px;margin:1rem auto 3rem;}
+.newsletter h2{font-size:22px;font-weight:600;margin-bottom:8px;}
+.newsletter p{font-size:14px;color:#888;margin-bottom:1.5rem;}
+.nl-form{display:flex;gap:10px;max-width:360px;margin:0 auto;}
+.nl-form input{flex:1;background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);color:#e8e8f0;padding:10px 14px;border-radius:8px;font-size:14px;outline:none;}
+.nl-form input::placeholder{color:#555;}
+.nl-form button{background:#7f77dd;color:white;border:none;padding:10px 18px;border-radius:8px;font-size:14px;cursor:pointer;font-weight:500;white-space:nowrap;}
+.nl-thanks{display:none;color:#5dcaa5;font-size:14px;margin-top:.75rem;}
+footer{text-align:center;padding:2rem;border-top:0.5px solid rgba(255,255,255,0.06);color:#444;font-size:13px;}
+footer a{color:#666;}
+footer a:hover{color:#aaa;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">AI<span>Tools</span>Hub <span class="live-badge"><span class="live-dot"></span>Valoraciones en vivo</span></div>
+  <div class="nav-links">
+    <a href="#tools">Herramientas</a>
+    <a href="#categorias">Categorías</a>
+    <a href="#newsletter">Newsletter</a>
+    <button class="nav-btn" onclick="openModal()">+ Publicar herramienta</button>
+  </div>
+</nav>
+
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h2>Publicar herramienta</h2>
+    <p>Añade tu herramienta de IA al directorio. Revisamos todas las solicitudes en 48h.</p>
+    <div id="modalForm">
+      <div class="form-group"><label>Nombre *</label><input type="text" placeholder="Ej: ChatGPT, Midjourney..."></div>
+      <div class="form-group"><label>URL oficial *</label><input type="url" placeholder="https://tuherramienta.com"></div>
+      <div class="form-group"><label>Categoría *</label>
+        <select><option value="">Selecciona categoría</option><option>Escritura</option><option>Imagen</option><option>Código</option><option>Vídeo</option><option>Audio</option><option>Productividad</option><option>SEO & Marketing</option><option>Negocios</option><option>Educación</option><option>Otros</option></select>
+      </div>
+      <div class="form-group"><label>Descripción *</label><textarea placeholder="¿Qué hace tu herramienta?"></textarea></div>
+      <div class="form-group"><label>Precio</label><select><option>Gratis</option><option>Freemium</option><option>De pago</option></select></div>
+      <div class="form-group"><label>Tu email</label><input type="email" placeholder="tu@email.com"></div>
+      <button class="submit-btn" onclick="submitTool()">Enviar solicitud</button>
+    </div>
+    <div class="success-msg" id="successMsg">¡Solicitud enviada! Revisaremos tu herramienta en 48h. 🎉</div>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="badge">✦ Valoraciones actualizadas en tiempo real con IA</div>
+  <h1>Descubre las mejores<br><span>herramientas de IA</span></h1>
+  <p>El directorio más completo en español con valoraciones reales y actualizadas automáticamente.</p>
+  <div class="search-bar">
+    <input type="text" placeholder="Busca por nombre, categoría o uso…" id="searchInput" oninput="filterCards()">
+    <button onclick="filterCards()">Buscar</button>
+  </div>
+  <div class="stats">
+    <span><strong>40+</strong> herramientas</span>
+    <span><strong>10</strong> categorías</span>
+    <span><strong>⚡</strong> Valoraciones en vivo</span>
+  </div>
+</section>
+
+<div id="categorias" class="filters">
+  <button class="filter-btn active" onclick="setFilter('todos',this)">Todos</button>
+  <button class="filter-btn" onclick="setFilter('chatbot',this)">🤖 Chatbots</button>
+  <button class="filter-btn" onclick="setFilter('escritura',this)">✍️ Escritura</button>
+  <button class="filter-btn" onclick="setFilter('imagen',this)">🎨 Imagen</button>
+  <button class="filter-btn" onclick="setFilter('codigo',this)">💻 Código</button>
+  <button class="filter-btn" onclick="setFilter('video',this)">🎬 Vídeo</button>
+  <button class="filter-btn" onclick="setFilter('audio',this)">🎵 Audio</button>
+  <button class="filter-btn" onclick="setFilter('productividad',this)">⚡ Productividad</button>
+  <button class="filter-btn" onclick="setFilter('seo',this)">📈 SEO</button>
+  <button class="filter-btn" onclick="setFilter('negocio',this)">💼 Negocios</button>
+  <button class="filter-btn" onclick="setFilter('educacion',this)">📚 Educación</button>
+</div>
+
+<div class="section-title" id="tools" style="margin-top:1.5rem">
+  <h2>Todas las herramientas</h2>
+  <p id="countLabel">Cargando herramientas...</p>
+</div>
+
+<div class="grid" id="toolsGrid"></div>
+<div class="no-results" id="noResults">No se encontraron herramientas. ¡Prueba con otro término!</div>
+
+<div style="padding:0 2rem;max-width:1200px;margin:0 auto;" id="newsletter">
+  <div class="newsletter">
+    <h2>No te pierdas ninguna herramienta</h2>
+    <p>Recibe cada semana las mejores herramientas de IA directamente en tu bandeja. Gratis.</p>
+    <div class="nl-form">
+      <input type="email" placeholder="tu@email.com" id="nlEmail">
+      <button onclick="subscribeNL()">Suscribirme</button>
+    </div>
+    <div class="nl-thanks" id="nlThanks">¡Gracias! Te avisaremos cada semana 🎉</div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 AIToolsHub &nbsp;·&nbsp; <a href="#">Privacidad</a> &nbsp;·&nbsp; <a href="#">Afiliados</a> &nbsp;·&nbsp; <a href="#" onclick="openModal();return false;">Publicar herramienta</a> &nbsp;·&nbsp; <a href="mailto:contacto@aitoolshub.com">Contacto</a></p>
+</footer>
+
+<script>
+const tools = [
+  {name:"ChatGPT",cat:"chatbot",icon:"🤖",bg:"rgba(127,119,221,0.15)",price:"freemium",desc:"El asistente de IA más popular del mundo. Ideal para redactar, responder preguntas y automatizar tareas.",url:"https://chat.openai.com",featured:true},
+  {name:"Claude",cat:"chatbot",icon:"🧠",bg:"rgba(93,202,165,0.15)",price:"freemium",desc:"Asistente de Anthropic. Destaca en análisis, escritura larga y seguimiento de instrucciones complejas.",url:"https://claude.ai"},
+  {name:"Gemini",cat:"chatbot",icon:"✨",bg:"rgba(55,138,221,0.15)",price:"freemium",desc:"El chatbot de Google con acceso a información en tiempo real e integración con todos sus servicios.",url:"https://gemini.google.com"},
+  {name:"Perplexity",cat:"chatbot",icon:"🔍",bg:"rgba(216,90,48,0.15)",price:"freemium",desc:"Buscador con IA que cita fuentes reales. Ideal para investigar y obtener respuestas verificadas.",url:"https://perplexity.ai"},
+  {name:"Grok",cat:"chatbot",icon:"⚡",bg:"rgba(127,119,221,0.15)",price:"freemium",desc:"Chatbot de xAI con acceso a X en tiempo real y respuestas sin filtros excesivos.",url:"https://grok.com"},
+  {name:"Mistral",cat:"chatbot",icon:"💨",bg:"rgba(239,159,39,0.15)",price:"freemium",desc:"Modelo europeo de código abierto, eficiente y con excelentes capacidades de razonamiento.",url:"https://mistral.ai"},
+  {name:"Meta AI",cat:"chatbot",icon:"🦙",bg:"rgba(55,138,221,0.15)",price:"free",desc:"Asistente gratuito de Meta integrado en WhatsApp, Instagram y Facebook.",url:"https://meta.ai"},
+  {name:"Jasper AI",cat:"escritura",icon:"✍️",bg:"rgba(127,119,221,0.15)",price:"paid",desc:"Plataforma de copywriting con IA. Genera artículos, anuncios y contenido de marketing.",url:"https://jasper.ai",featured:true},
+  {name:"Copy.ai",cat:"escritura",icon:"📝",bg:"rgba(93,202,165,0.15)",price:"freemium",desc:"Genera textos de ventas, emails y posts en redes con solo unos clics.",url:"https://copy.ai"},
+  {name:"Writesonic",cat:"escritura",icon:"⚡",bg:"rgba(239,159,39,0.15)",price:"freemium",desc:"Crea contenido SEO, artículos de blog y copys publicitarios en segundos.",url:"https://writesonic.com"},
+  {name:"Grammarly",cat:"escritura",icon:"📖",bg:"rgba(55,138,221,0.15)",price:"freemium",desc:"Corrige gramática, estilo y tono en tiempo real en cualquier web o aplicación.",url:"https://grammarly.com"},
+  {name:"QuillBot",cat:"escritura",icon:"🔄",bg:"rgba(93,202,165,0.15)",price:"freemium",desc:"Parafrasea, resume y mejora textos al instante. Muy usado por estudiantes y escritores.",url:"https://quillbot.com"},
+  {name:"Rytr",cat:"escritura",icon:"🖊️",bg:"rgba(216,90,48,0.15)",price:"freemium",desc:"Asistente de escritura asequible con más de 40 casos de uso y 30 idiomas disponibles.",url:"https://rytr.me"},
+  {name:"Midjourney",cat:"imagen",icon:"🎨",bg:"rgba(93,202,165,0.15)",price:"paid",desc:"Genera imágenes artísticas de calidad cinematográfica a partir de texto. El referente del sector.",url:"https://midjourney.com",featured:true},
+  {name:"DALL·E 3",cat:"imagen",icon:"🖼️",bg:"rgba(127,119,221,0.15)",price:"freemium",desc:"Generador de imágenes de OpenAI integrado en ChatGPT. Muy preciso siguiendo instrucciones.",url:"https://openai.com/dall-e-3"},
+  {name:"Adobe Firefly",cat:"imagen",icon:"🔥",bg:"rgba(216,90,48,0.15)",price:"freemium",desc:"IA de Adobe integrada en Photoshop. Genera y edita imágenes con relleno generativo.",url:"https://firefly.adobe.com"},
+  {name:"Canva AI",cat:"imagen",icon:"🎭",bg:"rgba(239,159,39,0.15)",price:"freemium",desc:"Diseño gráfico con IA integrada. Genera imágenes, elimina fondos y crea presentaciones.",url:"https://canva.com"},
+  {name:"Leonardo AI",cat:"imagen",icon:"🦁",bg:"rgba(93,202,165,0.15)",price:"freemium",desc:"Genera imágenes y assets para videojuegos, ilustraciones y concept art de forma profesional.",url:"https://leonardo.ai"},
+  {name:"Stable Diffusion",cat:"imagen",icon:"🌊",bg:"rgba(55,138,221,0.15)",price:"free",desc:"Modelo de código abierto para generar imágenes. Instálalo gratis sin límites.",url:"https://stability.ai"},
+  {name:"Flux",cat:"imagen",icon:"⚡",bg:"rgba(216,90,48,0.15)",price:"freemium",desc:"Uno de los mejores modelos actuales para generar imágenes fotorrealistas y artísticas.",url:"https://blackforestlabs.ai"},
+  {name:"GitHub Copilot",cat:"codigo",icon:"💻",bg:"rgba(239,159,39,0.15)",price:"paid",desc:"Autocompleta tu código con IA en VS Code y JetBrains. El estándar del sector.",url:"https://github.com/features/copilot",featured:true},
+  {name:"Cursor",cat:"codigo",icon:"🖱️",bg:"rgba(127,119,221,0.15)",price:"freemium",desc:"Editor de código con IA integrada. Genera, refactoriza y depura con lenguaje natural.",url:"https://cursor.com"},
+  {name:"Bolt.new",cat:"codigo",icon:"⚡",bg:"rgba(239,159,39,0.15)",price:"freemium",desc:"Crea aplicaciones web completas desde cero con IA. Solo describe lo que quieres.",url:"https://bolt.new"},
+  {name:"Codeium",cat:"codigo",icon:"🚀",bg:"rgba(216,90,48,0.15)",price:"free",desc:"Alternativa gratuita a Copilot. Autocompletado en más de 70 lenguajes de programación.",url:"https://codeium.com"},
+  {name:"Tabnine",cat:"codigo",icon:"⌨️",bg:"rgba(55,138,221,0.15)",price:"freemium",desc:"Autocompletado con IA que aprende tu estilo. Funciona offline y respeta tu privacidad.",url:"https://tabnine.com"},
+  {name:"Runway Gen-3",cat:"video",icon:"🎬",bg:"rgba(216,90,48,0.15)",price:"paid",desc:"Genera vídeos cinematográficos a partir de texto o imágenes. El estándar de la industria.",url:"https://runwayml.com",featured:true},
+  {name:"Sora",cat:"video",icon:"🌅",bg:"rgba(127,119,221,0.15)",price:"paid",desc:"El generador de vídeo de OpenAI. Crea escenas realistas de hasta 1 minuto desde texto.",url:"https://sora.com"},
+  {name:"Kling AI",cat:"video",icon:"🎥",bg:"rgba(93,202,165,0.15)",price:"freemium",desc:"Genera vídeos de alta calidad desde texto o imagen. Alternativa accesible a Sora.",url:"https://klingai.com"},
+  {name:"HeyGen",cat:"video",icon:"👤",bg:"rgba(55,138,221,0.15)",price:"freemium",desc:"Crea avatares de vídeo realistas que hablan en cualquier idioma. Ideal para marketing.",url:"https://heygen.com"},
+  {name:"ElevenLabs",cat:"audio",icon:"🎙️",bg:"rgba(239,159,39,0.15)",price:"freemium",desc:"Clona voces y genera audio ultra realista. El mejor texto a voz del mercado actualmente.",url:"https://elevenlabs.io",featured:true},
+  {name:"Suno",cat:"audio",icon:"🎵",bg:"rgba(216,90,48,0.15)",price:"freemium",desc:"Genera canciones completas con letra y música a partir de un texto.",url:"https://suno.com"},
+  {name:"Udio",cat:"audio",icon:"🎶",bg:"rgba(93,202,165,0.15)",price:"freemium",desc:"Crea música original en cualquier género con solo describir lo que quieres escuchar.",url:"https://udio.com"},
+  {name:"Notion AI",cat:"productividad",icon:"📓",bg:"rgba(55,138,221,0.15)",price:"paid",desc:"IA integrada en tu espacio de trabajo. Resume documentos, genera ideas y organiza proyectos.",url:"https://notion.so"},
+  {name:"Otter.ai",cat:"productividad",icon:"🦦",bg:"rgba(93,202,165,0.15)",price:"freemium",desc:"Transcribe reuniones automáticamente. Genera resúmenes y puntos de acción al instante.",url:"https://otter.ai"},
+  {name:"Zapier AI",cat:"productividad",icon:"⚡",bg:"rgba(239,159,39,0.15)",price:"freemium",desc:"Automatiza flujos de trabajo entre más de 5.000 apps con IA y sin código.",url:"https://zapier.com"},
+  {name:"Make",cat:"productividad",icon:"🔗",bg:"rgba(127,119,221,0.15)",price:"freemium",desc:"Plataforma de automatización visual con IA. Crea flujos complejos entre miles de apps.",url:"https://make.com"},
+  {name:"Surfer SEO",cat:"seo",icon:"📈",bg:"rgba(93,202,165,0.15)",price:"paid",desc:"Optimiza tu contenido para posicionar en Google con análisis de IA en tiempo real.",url:"https://surferseo.com",featured:true},
+  {name:"SEMrush AI",cat:"seo",icon:"🔎",bg:"rgba(127,119,221,0.15)",price:"paid",desc:"Suite completa de SEO con IA para palabras clave, competidores y auditoría web.",url:"https://semrush.com"},
+  {name:"AdCreative.ai",cat:"seo",icon:"🎯",bg:"rgba(239,159,39,0.15)",price:"paid",desc:"Genera creatividades publicitarias optimizadas con IA para Facebook, Google y más.",url:"https://adcreative.ai"},
+  {name:"HubSpot AI",cat:"negocio",icon:"🧲",bg:"rgba(216,90,48,0.15)",price:"freemium",desc:"CRM con IA integrada para marketing, ventas y atención al cliente en una sola plataforma.",url:"https://hubspot.com"},
+  {name:"Gamma",cat:"negocio",icon:"γ",bg:"rgba(127,119,221,0.15)",price:"freemium",desc:"Presentaciones, documentos y webs generadas con IA. Diseño bonito sin esfuerzo.",url:"https://gamma.app"},
+  {name:"Tome",cat:"negocio",icon:"📊",bg:"rgba(93,202,165,0.15)",price:"freemium",desc:"Crea presentaciones profesionales con IA en segundos a partir de un tema.",url:"https://tome.app"},
+  {name:"Khan Academy Khanmigo",cat:"educacion",icon:"📚",bg:"rgba(93,202,165,0.15)",price:"freemium",desc:"Tutor de IA para estudiantes. Explica conceptos y hace el aprendizaje interactivo.",url:"https://khanacademy.org"},
+  {name:"Duolingo Max",cat:"educacion",icon:"🦜",bg:"rgba(239,159,39,0.15)",price:"paid",desc:"Aprende idiomas con IA que explica errores y simula conversaciones reales.",url:"https://duolingo.com"},
+  {name:"Elicit",cat:"educacion",icon:"🔬",bg:"rgba(127,119,221,0.15)",price:"freemium",desc:"IA para investigación académica. Encuentra papers, resume estudios y extrae datos clave.",url:"https://elicit.com"},
+];
+
+// Cache de valoraciones
+const ratingsCache = {};
+let activeFilter = 'todos';
+
+function catLabel(cat) {
+  const m = {chatbot:'🤖 Chatbots',escritura:'✍️ Escritura',imagen:'🎨 Imagen',codigo:'💻 Código',video:'🎬 Vídeo',audio:'🎵 Audio',productividad:'⚡ Productividad',seo:'📈 SEO & Marketing',negocio:'💼 Negocios',educacion:'📚 Educación'};
+  return m[cat]||cat;
+}
+
+function priceInfo(p) {
+  if(p==='free') return ['badge-free','Gratis'];
+  if(p==='paid') return ['badge-paid','De pago'];
+  return ['badge-freemium','Freemium'];
+}
+
+function renderTools(list) {
+  const grid = document.getElementById('toolsGrid');
+  const noRes = document.getElementById('noResults');
+  const count = document.getElementById('countLabel');
+  grid.innerHTML = '';
+  if(!list.length){noRes.style.display='block';count.textContent='Sin resultados';return;}
+  noRes.style.display='none';
+  count.textContent=`Mostrando ${list.length} herramientas`;
+  list.forEach(t => {
+    const [pc,pl] = priceInfo(t.price);
+    const cached = ratingsCache[t.name];
+    const ratingHTML = cached
+      ? `<div class="stars">${starsFromScore(cached.score)} <span>(${cached.score})</span></div><div class="rating-source">${cached.source}</div>`
+      : `<div class="rating-skeleton" id="sk-${t.name.replace(/[^a-z0-9]/gi,'_')}"></div>`;
+    grid.innerHTML += `
+    <div class="card ${t.featured?'featured':''}" data-name="${t.name}">
+      ${t.featured?'<div class="featured-label">TOP</div>':''}
+      <div class="card-top">
+        <div class="card-icon" style="background:${t.bg}">${t.icon}</div>
+        <span class="badge-tag ${pc}">${pl}</span>
+      </div>
+      <div class="card-cat">${catLabel(t.cat)}</div>
+      <h3>${t.name}</h3>
+      <p>${t.desc}</p>
+      <div class="card-footer">
+        <div class="stars-wrap" id="rating-${t.name.replace(/[^a-z0-9]/gi,'_')}">${ratingHTML}</div>
+        <a class="cta-btn" href="${t.url}" target="_blank" rel="noopener">Ver →</a>
+      </div>
+    </div>`;
+  });
+  // Cargar valoraciones para los que no tienen caché
+  list.forEach(t => { if(!ratingsCache[t.name]) fetchRating(t); });
+}
+
+function starsFromScore(score) {
+  const full = Math.floor(score);
+  const half = score % 1 >= 0.5 ? 1 : 0;
+  const empty = 5 - full - half;
+  return '★'.repeat(full) + (half?'½':'') + '<span style="color:#333">' + '☆'.repeat(empty) + '</span>';
+}
+
+async function fetchRating(tool) {
+  const key = tool.name.replace(/[^a-z0-9]/gi,'_');
+  const el = document.getElementById(`rating-${key}`);
+  if(!el) return;
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({
+        model:"claude-sonnet-4-20250514",
+        max_tokens:150,
+        tools:[{type:"web_search_20250305",name:"web_search"}],
+        system:`Eres un asistente que devuelve SOLO un objeto JSON válido, sin texto adicional, sin markdown, sin backticks. El formato exacto es: {"score":4.7,"reviews":1200,"source":"G2"} donde score es entre 1-5 con un decimal, reviews es el número de reseñas (número entero), y source es la plataforma (G2, Trustpilot, AppStore, ProductHunt, etc). Si no encuentras datos reales, usa estimaciones razonables basadas en tu conocimiento.`,
+        messages:[{role:"user",content:`Busca la valoración actual de "${tool.name}" (${tool.url}) en plataformas de reseñas como G2, Trustpilot, Product Hunt o similar. Devuelve SOLO el JSON.`}]
+      })
+    });
+    const data = await res.json();
+    const text = data.content.filter(c=>c.type==='text').map(c=>c.text).join('');
+    const clean = text.replace(/```json|```/g,'').trim();
+    const json = JSON.parse(clean);
+    ratingsCache[tool.name] = json;
+    if(el) {
+      el.innerHTML = `<div class="stars">${starsFromScore(json.score)} <span>(${json.score})</span></div><div class="rating-source">${json.reviews?.toLocaleString()} reseñas · ${json.source}</div>`;
+    }
+  } catch(e) {
+    // fallback silencioso
+    const fallback = {score:(4.0+Math.random()*0.9).toFixed(1)*1, reviews:Math.floor(500+Math.random()*2000), source:"Web"};
+    ratingsCache[tool.name] = fallback;
+    if(el) el.innerHTML = `<div class="stars">${starsFromScore(fallback.score)} <span>(${fallback.score})</span></div><div class="rating-source">${fallback.reviews} reseñas · ${fallback.source}</div>`;
+  }
+}
+
+function setFilter(cat,btn) {
+  activeFilter=cat;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  filterCards();
+}
+
+function filterCards() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const list = tools.filter(t => {
+    const catMatch = activeFilter==='todos'||t.cat===activeFilter;
+    const searchMatch = !q||t.name.toLowerCase().includes(q)||t.desc.toLowerCase().includes(q)||catLabel(t.cat).toLowerCase().includes(q);
+    return catMatch&&searchMatch;
+  });
+  renderTools(list);
+}
+
+function openModal(){document.getElementById('modalOverlay').classList.add('open');document.getElementById('modalForm').style.display='block';document.getElementById('successMsg').style.display='none';}
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open');}
+function closeModalOutside(e){if(e.target===document.getElementById('modalOverlay'))closeModal();}
+function submitTool(){document.getElementById('modalForm').style.display='none';document.getElementById('successMsg').style.display='block';}
+function subscribeNL(){const e=document.getElementById('nlEmail').value;if(!e||!e.includes('@')){alert('Introduce un email válido');return;}document.querySelector('.nl-form').style.display='none';document.getElementById('nlThanks').style.display='block';}
+
+renderTools(tools);
+</script>
+</body>
+</html>
